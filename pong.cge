@@ -8,17 +8,19 @@ event move {
 }
 
 event positions {
-	ball: point,
-	paddle_left: point,
-	paddle_right: point
+	ball: rectangle,
+	paddle_left: rectangle,
+	paddle_right: rectangle
 }
 
 event score {
-	player_a: int,
-	player_b: int
+	player_left: int,
+	player_right: int
 }
 
-type point {
-	x: int,
-	y: int
+type rectangle {
+	x: float,
+	y: float,
+	width: float,
+	height: float
 }

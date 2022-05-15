@@ -1,8 +1,15 @@
 package main
 
-import "github.com/code-game-project/go-server/cg"
+import (
+	"math/rand"
+	"time"
+
+	"github.com/code-game-project/go-server/cg"
+	"github.com/code-game-project/pong/pong"
+)
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	server := cg.NewServer(cg.ServerConfig{
 		Port:              8080,
 		CGEFilepath:       "pong.cge",
@@ -10,6 +17,6 @@ func main() {
 	})
 
 	server.Run(func(cgGame *cg.Game) {
-		newGame(cgGame).Run()
+		pong.NewGame(cgGame).Run()
 	})
 }
