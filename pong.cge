@@ -1,0 +1,24 @@
+name pong
+version 0.1
+
+event move {
+	direction: enum direction {
+		none, up, down
+	}
+}
+
+event positions {
+	ball: point,
+	paddle_left: point,
+	paddle_right: point
+}
+
+event score {
+	player_a: int,
+	player_b: int
+}
+
+type point {
+	x: int,
+	y: int
+}
