@@ -32,7 +32,6 @@ type Game struct {
 	ball     Rectangle
 	ballVelX float64
 	ballVelY float64
-	slowBall bool
 }
 
 func NewGame(cgGame *cg.Game) *Game {
@@ -106,20 +105,14 @@ func (g *Game) checkCollsions() {
 	}
 
 	if g.ballVelX < 0 && g.ball.checkCollision(g.playerLeft.rect) {
-		g.ballVelX = -g.ballVelX
-		if g.slowBall {
-			g.ballVelX *= 2
-			g.ballVelY *= 2
-			g.slowBall = false
-		}
+		angle := ((g.ball.Y - g.playerLeft.rect.Y - g.ball.Height) / (g.playerLeft.rect.Height + g.ball.Height) * 0.75 * math.Pi) - 0.1875*math.Pi
+		g.ballVelX = math.Cos(angle) * 15
+		g.ballVelY = math.Sin(angle) * 15
 	}
 	if g.ballVelX > 0 && g.ball.checkCollision(g.playerRight.rect) {
-		g.ballVelX = -g.ballVelX
-		if g.slowBall {
-			g.ballVelX *= 2
-			g.ballVelY *= 2
-			g.slowBall = false
-		}
+		angle := ((g.ball.Y - g.playerRight.rect.Y - g.ball.Height) / (g.playerRight.rect.Height + g.ball.Height) * 0.75 * math.Pi) - 0.1875*math.Pi
+		g.ballVelX = -math.Cos(angle) * 15
+		g.ballVelY = math.Sin(angle) * 15
 	}
 }
 
@@ -149,14 +142,12 @@ func (g *Game) newBall() {
 	g.ball.X = g.width/2 - g.ball.Width/2
 	g.ball.Y = g.height/2 - g.ball.Height/2
 	angle := rand.Float64()*0.5*math.Pi - 0.25*math.Pi
-	g.ballVelX = math.Cos(angle) * 6
-	g.ballVelY = math.Sin(angle) * 6
+	g.ballVelX = math.Cos(angle) * 10
+	g.ballVelY = math.Sin(angle) * 10
 
 	if (g.playerLeft.score+g.playerRight.score)%2 == 0 {
 		g.ballVelX = -g.ballVelX
 	}
-
-	g.slowBall = true
 }
 
 func (g *Game) onPlayerJoined(cgPlayer *cg.Player) {
