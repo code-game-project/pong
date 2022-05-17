@@ -3,7 +3,7 @@ module github.com/code-game-project/pong
 go 1.18
 
 require (
-	github.com/code-game-project/go-server v0.3.2
+	github.com/code-game-project/go-server v0.4.0
 	github.com/spf13/pflag v1.0.5
 )
 
