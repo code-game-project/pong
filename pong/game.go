@@ -208,16 +208,15 @@ func (g *Game) sendPositions() {
 
 func (g *Game) pollEvents() {
 	for g.cg.Running() {
-		select {
-		case event := <-g.cg.Events:
-			player := g.playerLeft
-			if event.Player == g.playerRight.cg {
-				player = g.playerRight
-			}
-			g.handleEvent(event.Event, player)
-		default:
+		event, ok := g.cg.NextEvent()
+		if !ok {
 			return
 		}
+		player := g.playerLeft
+		if event.Player == g.playerRight.cg {
+			player = g.playerRight
+		}
+		g.handleEvent(event.Event, player)
 	}
 }
 
