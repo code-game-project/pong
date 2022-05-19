@@ -1,20 +1,30 @@
+// An implementation of Pong for CodeGame.
 name pong
-version 0.1
+version 0.3
 
+// Clients send the move event to the server to signal a direction change of their paddle.
 event move {
+	// The direction of the paddle movement.
 	direction: enum direction {
 		none, up, down
 	}
 }
 
+// The positions event is sent to all players to tell them the positions of all objects in the game.
 event positions {
+	// The position of the ball.
 	ball: rectangle,
+	// The position of left paddle.
 	paddle_left: rectangle,
+	// The position of right paddle.
 	paddle_right: rectangle
 }
 
+// The score event is sent to all players when a player scores a point.
 event score {
+	// The score of the left player.
 	player_left: int,
+	// The score of the right player.
 	player_right: int
 }
 
