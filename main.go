@@ -2,6 +2,8 @@ package main
 
 import (
 	"math/rand"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/code-game-project/go-server/cg"
@@ -13,8 +15,19 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	var port int
-	pflag.IntVarP(&port, "port", "p", 80, "The network port of the game server.")
+	pflag.IntVarP(&port, "port", "p", 0, "The network port of the game server.")
 	pflag.Parse()
+
+	if port == 0 {
+		portStr, ok := os.LookupEnv("CG_PORT")
+		if ok {
+			port, _ = strconv.Atoi(portStr)
+		}
+	}
+
+	if port == 0 {
+		port = 80
+	}
 
 	server := cg.NewServer("pong", cg.ServerConfig{
 		Port:              port,
