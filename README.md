@@ -1,8 +1,21 @@
 # Pong
 ![CodeGame Version](https://img.shields.io/badge/CodeGame-v0.4-orange)
-![CGE Version](https://img.shields.io/badge/CGE-v0.2-green)
+![CGE Version](https://img.shields.io/badge/CGE-v0.3-green)
 
 An implementation of [Pong](https://en.wikipedia.org/wiki/Pong) for [CodeGame](https://github.com/code-game-project).
+
+## Usage
+
+```sh
+# Run on default port 80
+pong
+
+# Specify a custom port
+pong --port 8080
+
+## Specify a custom port through an environment variable
+CG_PORT=8080 pong
+```
 
 ## License
 
