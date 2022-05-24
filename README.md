@@ -1,5 +1,6 @@
 # Pong
-![CodeGame Version](https://img.shields.io/badge/CodeGame-v0.4-orange)
+![CodeGame Protocol Version](https://img.shields.io/badge/Protocol-v0.6-orange)
+![CodeGame GameServer Version](https://img.shields.io/badge/GameServer-v0.1-yellow)
 ![CGE Version](https://img.shields.io/badge/CGE-v0.3-green)
 
 An implementation of [Pong](https://en.wikipedia.org/wiki/Pong) for [CodeGame](https://github.com/code-game-project).

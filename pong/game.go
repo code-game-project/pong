@@ -119,14 +119,9 @@ func (g *Game) checkCollsions() {
 func (g *Game) goal(player *player) {
 	player.score++
 
-	g.playerLeft.cg.Send(player.cg.Id, EventScore, EventScoreData{
+	g.cg.Send(player.cg.Id, EventScore, EventScoreData{
 		PlayerLeft:  g.playerLeft.score,
 		PlayerRight: g.playerRight.score,
-	})
-
-	g.playerRight.cg.Send(player.cg.Id, EventScore, EventScoreData{
-		PlayerLeft:  g.playerRight.score,
-		PlayerRight: g.playerLeft.score,
 	})
 
 	g.newBall()
@@ -169,7 +164,7 @@ func (g *Game) onPlayerJoined(cgPlayer *cg.Player) {
 			},
 			cg: cgPlayer,
 		}
-		g.newBall()
+		g.start()
 	}
 }
 
@@ -178,32 +173,21 @@ func (g *Game) onPlayerLeft(player *cg.Player) {
 }
 
 func (g *Game) sendPositions() {
-	g.playerLeft.cg.Send("server", EventPositions, EventPositionsData{
+	g.cg.Send("server", EventPositions, EventPositionsData{
 		Ball:        g.ball,
 		PaddleLeft:  g.playerLeft.rect,
 		PaddleRight: g.playerRight.rect,
 	})
+}
 
-	g.playerRight.cg.Send("server", EventPositions, EventPositionsData{
-		Ball: Rectangle{
-			X:      g.width - g.ball.Width - g.ball.X,
-			Y:      g.ball.Y,
-			Width:  g.ball.Width,
-			Height: g.ball.Height,
-		},
-		PaddleLeft: Rectangle{
-			X:      g.playerRight.rect.X,
-			Y:      g.playerLeft.rect.Y,
-			Width:  g.playerLeft.rect.Width,
-			Height: g.playerLeft.rect.Height,
-		},
-		PaddleRight: Rectangle{
-			X:      g.playerLeft.rect.X,
-			Y:      g.playerRight.rect.Y,
-			Width:  g.playerRight.rect.Width,
-			Height: g.playerRight.rect.Height,
-		},
+func (g *Game) start() {
+	g.playerLeft.cg.Send("server", EventStart, EventStartData{
+		Side: SideLeft,
 	})
+	g.playerRight.cg.Send("server", EventStart, EventStartData{
+		Side: SideRight,
+	})
+	g.newBall()
 }
 
 func (g *Game) pollEvents() {

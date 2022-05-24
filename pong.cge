@@ -2,6 +2,14 @@
 name pong
 version 0.3
 
+// Is sent once the game starts.
+event start {
+	// The side of the player.
+	side: enum side {
+		left, right
+	}
+}
+
 // Clients send the move event to the server to signal a direction change of their paddle.
 event move {
 	// The direction of the paddle movement.

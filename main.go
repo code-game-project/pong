@@ -6,12 +6,14 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Bananenpro/log"
 	"github.com/code-game-project/go-server/cg"
 	"github.com/code-game-project/pong/pong"
 	"github.com/spf13/pflag"
 )
 
 func main() {
+	log.SetSeverity(log.TRACE)
 	rand.Seed(time.Now().UnixNano())
 
 	var port int
@@ -30,12 +32,14 @@ func main() {
 	}
 
 	server := cg.NewServer("pong", cg.ServerConfig{
-		Port:              port,
-		CGEFilepath:       "pong.cge",
-		MaxPlayersPerGame: 2,
-		DisplayName:       "Pong",
-		Description:       "An implementation of Pong for CodeGame.",
-		RepositoryURL:     "https://github.com/code-game-project/pong",
+		Port:                    port,
+		CGEFilepath:             "pong.cge",
+		MaxPlayersPerGame:       2,
+		DeleteInactiveGameDelay: 15 * time.Minute,
+		KickInactivePlayerDelay: 15 * time.Minute,
+		DisplayName:             "Pong",
+		Description:             "An implementation of Pong for CodeGame.",
+		RepositoryURL:           "https://github.com/code-game-project/pong",
 	})
 
 	server.Run(func(cgGame *cg.Game) {
