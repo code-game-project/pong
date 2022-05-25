@@ -12,7 +12,7 @@ An implementation of [Pong](https://en.wikipedia.org/wiki/Pong) for [CodeGame](h
 pong
 
 # Specify a custom port
-pong --port 8080
+pong --port=8080
 
 ## Specify a custom port through an environment variable
 CG_PORT=8080 pong
