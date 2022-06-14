@@ -5,6 +5,10 @@
 
 An implementation of [Pong](https://en.wikipedia.org/wiki/Pong) for [CodeGame](https://code-game.org).
 
+## Known instances
+
+- `games.code-game.org/pong`
+
 ## Usage
 
 ```sh
@@ -16,6 +20,19 @@ pong --port=8080
 
 ## Specify a custom port through an environment variable
 CG_PORT=8080 pong
+```
+
+### Running with Docker
+
+Prerequisites:
+- [Docker](https://docker.com/)
+
+```sh
+# Download image
+docker pull codegameproject/pong:0.1
+
+# Run container
+docker run -d -p <port-on-host-machine>:8080 --name pong codegameproject/pong:0.1
 ```
 
 ## License
