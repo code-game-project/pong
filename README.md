@@ -29,10 +29,10 @@ Prerequisites:
 
 ```sh
 # Download image
-docker pull codegameproject/pong:0.1
+docker pull codegameproject/pong:0.2
 
 # Run container
-docker run -d -p <port-on-host-machine>:8080 --name pong codegameproject/pong:0.1
+docker run -d -p <port-on-host-machine>:8080 --name pong codegameproject/pong:0.2
 ```
 
 ## License

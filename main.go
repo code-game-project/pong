@@ -39,7 +39,7 @@ func main() {
 		KickInactivePlayerDelay: 15 * time.Minute,
 		DisplayName:             "Pong",
 		Description:             "An implementation of Pong for CodeGame.",
-		Version:                 "0.1",
+		Version:                 "0.2",
 		RepositoryURL:           "https://github.com/code-game-project/pong",
 	})
 
