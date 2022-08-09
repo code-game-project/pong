@@ -8,12 +8,6 @@ import (
 	"github.com/code-game-project/go-server/cg"
 )
 
-type ball struct {
-	rect Rectangle
-	vX   float64
-	vY   float64
-}
-
 type player struct {
 	cg    *cg.Player
 	score int
@@ -23,6 +17,8 @@ type player struct {
 
 type Game struct {
 	cg     *cg.Game
+	config GameConfig
+
 	width  float64
 	height float64
 
@@ -34,9 +30,10 @@ type Game struct {
 	ballVelY float64
 }
 
-func NewGame(cgGame *cg.Game) *Game {
+func NewGame(cgGame *cg.Game, config GameConfig) *Game {
 	game := &Game{
 		cg:     cgGame,
+		config: config,
 		width:  650,
 		height: 480,
 		ball: Rectangle{
@@ -49,10 +46,14 @@ func NewGame(cgGame *cg.Game) *Game {
 	return game
 }
 
-func (g *Game) handleEvent(event cg.Event, player *player) {
-	if event.Name == EventMove {
-		var data EventMoveData
-		event.UnmarshalData(&data)
+func (g *Game) handleCommand(player *player, cmd cg.Command) {
+	if cmd.Name == MoveCmd {
+		var data MoveCmdData
+		err := cmd.UnmarshalData(&data)
+		if err != nil {
+			player.cg.Log.ErrorData(cmd, "failed to decode command data: %s", err)
+			return
+		}
 		switch data.Direction {
 		case DirectionNone:
 			player.vY = 0
@@ -119,7 +120,7 @@ func (g *Game) checkCollsions() {
 func (g *Game) goal(player *player) {
 	player.score++
 
-	g.cg.Send(player.cg.Id, EventScore, EventScoreData{
+	g.cg.Send(ScoreEvent, ScoreEventData{
 		PlayerLeft:  g.playerLeft.score,
 		PlayerRight: g.playerRight.score,
 	})
@@ -173,7 +174,7 @@ func (g *Game) onPlayerLeft(player *cg.Player) {
 }
 
 func (g *Game) sendPositions() {
-	g.cg.Send("server", EventPositions, EventPositionsData{
+	g.cg.Send(PositionsEvent, PositionsEventData{
 		Ball:        g.ball,
 		PaddleLeft:  g.playerLeft.rect,
 		PaddleRight: g.playerRight.rect,
@@ -181,26 +182,26 @@ func (g *Game) sendPositions() {
 }
 
 func (g *Game) start() {
-	g.playerLeft.cg.Send("server", EventStart, EventStartData{
+	g.playerLeft.cg.Send(StartEvent, StartEventData{
 		Side: SideLeft,
 	})
-	g.playerRight.cg.Send("server", EventStart, EventStartData{
+	g.playerRight.cg.Send(StartEvent, StartEventData{
 		Side: SideRight,
 	})
 	g.newBall()
 }
 
-func (g *Game) pollEvents() {
+func (g *Game) pollCommands() {
 	for g.cg.Running() {
-		event, ok := g.cg.NextEvent()
+		cmd, ok := g.cg.NextCommand()
 		if !ok {
 			return
 		}
 		player := g.playerLeft
-		if event.Player == g.playerRight.cg {
+		if cmd.Origin == g.playerRight.cg {
 			player = g.playerRight
 		}
-		g.handleEvent(event.Event, player)
+		g.handleCommand(player, cmd.Cmd)
 	}
 }
 
@@ -208,7 +209,7 @@ func (g *Game) Run() {
 	for g.cg.Running() {
 		start := time.Now().UnixMilli()
 
-		g.pollEvents()
+		g.pollCommands()
 
 		if g.playerLeft != nil && g.playerRight != nil {
 			g.update()

@@ -1,24 +1,6 @@
-/*
-An implementation of Pong for CodeGame.
-*/
 package pong
 
 import "github.com/code-game-project/go-server/cg"
-
-type Side string
-
-const (
-	SideLeft  Side = "left"
-	SideRight Side = "right"
-)
-
-// Is sent once the game starts.
-const EventStart cg.EventName = "start"
-
-type EventStartData struct {
-	// The side of the player.
-	Side Side `json:"side"`
-}
 
 type Direction string
 
@@ -28,18 +10,33 @@ const (
 	DirectionDown Direction = "down"
 )
 
-// Clients send the move event to the server to signal a direction change of their paddle.
-const EventMove cg.EventName = "move"
+// Clients send the move command to the server to signal a direction change of their paddle.
+const MoveCmd cg.CommandName = "move"
 
-type EventMoveData struct {
+type MoveCmdData struct {
 	// The direction of the paddle movement.
 	Direction Direction `json:"direction"`
 }
 
-// The positions event is sent to all players to tell them the positions of all objects in the game.
-const EventPositions cg.EventName = "positions"
+type Side string
 
-type EventPositionsData struct {
+const (
+	SideLeft  Side = "left"
+	SideRight Side = "right"
+)
+
+// Is sent once the game starts.
+const StartEvent cg.EventName = "start"
+
+type StartEventData struct {
+	// The side of the player.
+	Side Side `json:"side"`
+}
+
+// The positions event is sent to all players to tell them the positions of all objects in the game.
+const PositionsEvent cg.EventName = "positions"
+
+type PositionsEventData struct {
 	// The position of the ball.
 	Ball Rectangle `json:"ball"`
 	// The position of left paddle.
@@ -49,9 +46,9 @@ type EventPositionsData struct {
 }
 
 // The score event is sent to all players when a player scores a point.
-const EventScore cg.EventName = "score"
+const ScoreEvent cg.EventName = "score"
 
-type EventScoreData struct {
+type ScoreEventData struct {
 	// The score of the left player.
 	PlayerLeft int `json:"player_left"`
 	// The score of the right player.
@@ -63,4 +60,7 @@ type Rectangle struct {
 	Y      float64 `json:"y"`
 	Width  float64 `json:"width"`
 	Height float64 `json:"height"`
+}
+
+type GameConfig struct {
 }

@@ -1,7 +1,6 @@
 # Pong
-![CodeGame Protocol Version](https://img.shields.io/badge/Protocol-v0.6-orange)
-![CodeGame GameServer Version](https://img.shields.io/badge/GameServer-v0.1-yellow)
-![CGE Version](https://img.shields.io/badge/CGE-v0.3-green)
+![CodeGame Protocol Version](https://img.shields.io/badge/Protocol-v0.7-orange)
+![CGE Version](https://img.shields.io/badge/CGE-v0.4-green)
 
 An implementation of [Pong](https://en.wikipedia.org/wiki/Pong) for [CodeGame](https://code-game.org).
 
@@ -12,14 +11,14 @@ An implementation of [Pong](https://en.wikipedia.org/wiki/Pong) for [CodeGame](h
 ## Usage
 
 ```sh
-# Run on default port 80
+# Run on default port 8080
 pong
 
 # Specify a custom port
-pong --port=8080
+pong --port=5000
 
 ## Specify a custom port through an environment variable
-CG_PORT=8080 pong
+CG_PORT=5000 pong
 ```
 
 ### Running with Docker
@@ -29,10 +28,10 @@ Prerequisites:
 
 ```sh
 # Download image
-docker pull codegameproject/pong:0.2
+docker pull codegameproject/pong:0.3
 
 # Run container
-docker run -d -p <port-on-host-machine>:8080 --name pong codegameproject/pong:0.2
+docker run -d --restart on-failure -p <port-on-host-machine>:8080 --name pong codegameproject/pong:0.3
 ```
 
 ## License
